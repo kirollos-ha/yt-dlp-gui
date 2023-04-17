@@ -3,6 +3,8 @@ from PySide6.QtWidgets import (QApplication, QWidget, QMainWindow,
                                QHBoxLayout, QVBoxLayout,
                                QCheckBox, QLineEdit, QPushButton)
 
+from downloader import Downloader
+
 class MainWindow(QMainWindow):
     """
     finestra principale (e unica) dell'applicazione
@@ -11,6 +13,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.make_ui()
+        self.make_internals()
         self.connect_ui()
 
     def make_ui(self):
@@ -46,11 +49,21 @@ class MainWindow(QMainWindow):
         self.main_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.main_widget)
 
+    def make_internals(self):
+        self.downloader = Downloader()
+
     def connect_ui(self):
         self.download_button.clicked.connect(self.download_command)
 
     def download_command(self):
+        self.downloader.download(link=self.link_widget.text(),
+                                 down_playlist=self.playlist_checkbox.isChecked(),
+                                 just_audio=self.just_audio_checkbox.isChecked())
         print("Hello from the other side")
+        if self.playlist_checkbox.isChecked():
+            print("playlist")
+        if self.just_audio_checkbox.isChecked():
+            print("just the audio")
 
 if __name__ == "__main__":
     app = QApplication()
