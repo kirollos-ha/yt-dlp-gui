@@ -15,5 +15,4 @@ class Downloader:
             command.append("--extract-audio")
 
         command.append(kwargs["link"])
-        print(command)
-        return ["ls", "-l"] # placeholder
+        return command
